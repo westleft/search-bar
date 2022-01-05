@@ -1,5 +1,7 @@
 <?php
 
+$value = $_GET['search'];
+
 class Connection
 {
   public PDO $pdo;
@@ -7,7 +9,7 @@ class Connection
   public function __construct()
   {
     $servername = "localhost";
-    $dbname = "cart";
+    $dbname = "library";
     $username = "root";
     $password = "root";
     try {
@@ -20,9 +22,13 @@ class Connection
     }
   }
 
-  public function getData()
+  public function getData($value)
   {
-    $mysqlRequest = "SELECT * FROM cart ORDER BY title DESC";
+    if($value == ''){
+        return;
+    }
+    // $mysqlRequest = "SELECT * FROM library ORDER BY title DESC";
+    $mysqlRequest = "SELECT distinct(title) " . "FROM library WHERE title LIKE('" . $value . "%')ORDER BY title";
     $statement = $this->pdo->prepare($mysqlRequest);
     $statement->execute();
 
@@ -32,7 +38,7 @@ class Connection
 }
 
 $c = new Connection();
-$products = $c->getData();
+$products = $c->getData($value);
 
 // echo '<pre>', print_r($products), '</pre>';
 
