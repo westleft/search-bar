@@ -8,7 +8,7 @@ input.addEventListener("keyup", () => {
 });
 
 const getData = () => {
-  fetch(`data.php?search=${input.value}`, {})
+  fetch(`data.php?search=${input.value}`, {}) // 傳參數到data.php
     .then((response) => {
       // 這裡會得到一個 ReadableStream 的物件
       //   console.log(response);
@@ -19,19 +19,21 @@ const getData = () => {
       detail.innerHTML = "";
       data = jsonData;
       data.forEach((item) => {
-        detail.innerHTML += `
-          <p class="result">${item.title}</p>
-      `;
+        detail.innerHTML += `<p class="result">${item.title}</p>`;
         results = [...document.querySelectorAll(".result")];
-        results.forEach(function (item, index) {
-          item.addEventListener("click", () => {
-            input.value = item.textContent;
-            getData();
-          });
-        });
+        changeText(results);
       });
     })
     .catch((err) => {
       console.log("錯誤:", err);
     });
+};
+
+const changeText = (element) => {
+  element.forEach((item) => {
+    item.addEventListener("click", () => {
+      input.value = item.textContent;
+      getData();
+    });
+  });
 };

@@ -28,6 +28,7 @@ class Connection
         return;
     }
     // $mysqlRequest = "SELECT * FROM library ORDER BY title DESC";
+    // 傳隔壁的 vlaue 進來，用 SQL 查詢回傳 data
     $mysqlRequest = "SELECT distinct(title) " . "FROM library WHERE title LIKE('" . $value . "%')ORDER BY title";
     $statement = $this->pdo->prepare($mysqlRequest);
     $statement->execute();
@@ -37,11 +38,10 @@ class Connection
   }
 }
 
-$c = new Connection();
-$products = $c->getData($value);
+$connection = new Connection();
+$products = $connection->getData($value);
 
 // echo '<pre>', print_r($products), '</pre>';
 
 $a = json_encode($products);
 echo $a;
-return $a;
